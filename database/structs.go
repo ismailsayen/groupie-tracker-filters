@@ -1,10 +1,14 @@
 package database
 
+import (
+	"sync"
+)
+
 type Data struct {
-	Art   []Artists
-	MinDc int
-	MaxDc int
-	FrstAlbm int
+	Art       []Artists
+	MinDc     int
+	MaxDc     int
+	Locations map[string]bool
 }
 
 type Artists struct {
@@ -20,6 +24,13 @@ type Artists struct {
 	ConDT        Dates
 	Relations    string `json:"relations"`
 	Rela         Relation
+}
+type LocaFltr struct {
+	Index []struct {
+		ID        int      `json:"id"`
+		Locations []string `json:"locations"`
+		Dates     string   `json:"dates"`
+	} `json:"index"`
 }
 
 type Locations struct {
@@ -43,7 +54,8 @@ type ErrorPage struct {
 	Type   string
 }
 
-func (d *Data) FindMinMax(a *[]Artists) {
+func (d *Data) FindMinMax(a *[]Artists, wg *sync.WaitGroup) {
+	defer wg.Done()
 	min := 2024
 	max := 0
 	for _, ele := range *a {
@@ -57,3 +69,14 @@ func (d *Data) FindMinMax(a *[]Artists) {
 	d.MinDc = min
 }
 
+func (d *Data) AllLocations(l *LocaFltr, wg *sync.WaitGroup) {
+	defer wg.Done()
+	if d.Locations == nil {
+		d.Locations = make(map[string]bool)
+	}
+	for _, ele := range l.Index {
+		for _, e := range ele.Locations {
+			d.Locations[e] = true
+		}
+	}
+}

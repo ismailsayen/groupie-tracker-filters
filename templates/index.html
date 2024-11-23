@@ -47,12 +47,14 @@
               name="creationDate"
               min="{{.MinDc}}"
               max="{{.MaxDc}}"
+              required
             />
           </div>
           <!--  -->
           <div>
             <select name="firstAlbum">
-              Select one Date. {{range .Art}}
+              <option value="">Select one Date.</option>
+               {{range .Art}}
               <option value="{{.FirstAlbum}}">{{.FirstAlbum}}</option>
               {{end}}
             </select>
@@ -64,7 +66,6 @@
               name="numberOfMembers"
               id="members1"
               value="1"
-              onclick="handleCheckboxClick(this)"
             />
           
             <label for="members2">2</label>
@@ -73,7 +74,6 @@
               name="numberOfMembers"
               id="members2"
               value="2"
-              onclick="handleCheckboxClick(this)"
             />
           
             <label for="members3">3</label>
@@ -82,7 +82,6 @@
               name="numberOfMembers"
               id="members3"
               value="3"
-              onclick="handleCheckboxClick(this)"
             />
           
             <label for="members4">4</label>
@@ -91,7 +90,6 @@
               name="numberOfMembers"
               id="members4"
               value="4"
-              onclick="handleCheckboxClick(this)"
             />
           
             <label for="members5">5</label>
@@ -100,7 +98,6 @@
               name="numberOfMembers"
               id="members5"
               value="5"
-              onclick="handleCheckboxClick(this)"
             />
           
             <label for="members6">6</label>
@@ -109,7 +106,6 @@
               name="numberOfMembers"
               id="members6"
               value="6"
-              onclick="handleCheckboxClick(this)"
             />
           
             <label for="members7">7</label>
@@ -118,7 +114,6 @@
               name="numberOfMembers"
               id="members7"
               value="7"
-              onclick="handleCheckboxClick(this)"
             />
           
             <label for="members8">8</label>
@@ -127,8 +122,15 @@
               name="numberOfMembers"
               id="members8"
               value="8"
-              onclick="handleCheckboxClick(this)"
             />
+          </div>
+          <div>
+           <input type="text" name="locationsOfConcerts" list="d">
+           <datalist id="d">
+             {{range $key,$value := .Locations}}
+               <option value="{{$key}}">{{$key}}</option>
+             {{end}}
+           </datalist>
           </div>
           </div>
           <button type="submit">submit</button>
@@ -146,12 +148,5 @@
       {{end}}
     </div>
   </body>
-  <script>
-    function handleCheckboxClick(checkbox) {
-      const checkboxes = document.querySelectorAll('input[name="numberOfMembers"]');
-      checkboxes.forEach((cb) => {
-        if (cb !== checkbox) cb.checked = false;
-      });
-    }
-  </script>
+  
 </html>

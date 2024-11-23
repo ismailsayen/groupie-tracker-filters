@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"fmt"
 	"net/http"
 	"strconv"
 
@@ -47,12 +46,7 @@ func InfosHandler(w http.ResponseWriter, r *http.Request) {
 			if artist.ID == 21 {
 				artist.Image = "./assets/img/3ib.jpg"
 			}
-			fmt.Println("-------------------")
-			fmt.Println(artist.CreationDate)
-			fmt.Println(artist.FirstAlbum)
-			fmt.Println(len(artist.Members))
-			fmt.Println(artist.Loca.Locations)
-			fmt.Println("-------------------")
+
 			err = RenderTempalte(w, "./templates/infos.html", artist, http.StatusOK)
 			if err != nil {
 				e := database.ErrorPage{Status: 500, Type: "Server Error"}

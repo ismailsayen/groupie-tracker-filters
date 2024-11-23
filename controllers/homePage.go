@@ -1,17 +1,23 @@
 package controllers
 
 import (
+	"fmt"
 	"net/http"
+	"sync"
 
 	"groupietracker/database"
 )
+
+var cache sync.Map
 
 func IndexHandler(w http.ResponseWriter, r *http.Request) {
 	switch r.URL.Path {
 	case "/":
 		if r.Method == http.MethodGet {
 			var artists []database.Artists
+			var locF database.LocaFltr
 			data := &database.Data{}
+			var wg sync.WaitGroup
 			err := FetchAPI("https://groupietrackers.herokuapp.com/api/artists", &artists)
 			if err != nil {
 				e := database.ErrorPage{Status: 500, Type: "Server Error"}
@@ -21,7 +27,11 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) {
 
 			artists[20].Image = "assets/img/3ib.jpg"
 			data.Art = artists
-			go data.FindMinMax(&artists)
+			wg.Add(4)
+			go data.FindMinMax(&artists, &wg)
+			go HandleLocations(&locF, data, &wg)
+			go StoreDataOncache(&artists, &wg)
+			wg.Wait()
 
 			err = RenderTempalte(w, "./templates/index.html", data, http.StatusOK)
 			if err != nil {
@@ -39,4 +49,10 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) {
 		RenderTempalte(w, "templates/error.html", e, http.StatusNotFound)
 		return
 	}
+}
+
+func StoreDataOncache(a *[]database.Artists, wg *sync.WaitGroup) {
+	defer wg.Done()
+	cache.Store("artists", a)
+	fmt.Println("success")
 }
