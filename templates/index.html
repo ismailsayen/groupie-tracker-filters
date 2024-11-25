@@ -44,7 +44,14 @@
             <label for="creationDate">Creation Date: </label>
             <input
               type="range"
-              name="creationDate"
+              name="minCreationDate"
+              min="{{.MinDc}}"
+              max="{{.MaxDc}}"
+              required
+            />
+            <input
+              type="range"
+              name="maxCreationDate"
               min="{{.MinDc}}"
               max="{{.MaxDc}}"
               required

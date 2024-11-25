@@ -1,21 +1,23 @@
 package controllers
 
 import (
-	"fmt"
 	"net/http"
 	"sync"
 
 	"groupietracker/database"
 )
 
-var cache sync.Map
+var (
+	cache    sync.Map
+	LocaFltr database.LocaFltr
+)
 
 func IndexHandler(w http.ResponseWriter, r *http.Request) {
 	switch r.URL.Path {
 	case "/":
 		if r.Method == http.MethodGet {
 			var artists []database.Artists
-			var locF database.LocaFltr
+
 			data := &database.Data{}
 			var wg sync.WaitGroup
 			err := FetchAPI("https://groupietrackers.herokuapp.com/api/artists", &artists)
@@ -29,7 +31,7 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) {
 			data.Art = artists
 			wg.Add(4)
 			go data.FindMinMax(&artists, &wg)
-			go HandleLocations(&locF, data, &wg)
+			go HandleLocations(&LocaFltr, data, &wg)
 			go StoreDataOncache(&artists, &wg)
 			wg.Wait()
 
@@ -54,5 +56,4 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) {
 func StoreDataOncache(a *[]database.Artists, wg *sync.WaitGroup) {
 	defer wg.Done()
 	cache.Store("artists", a)
-	fmt.Println("success")
 }
