@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="shortcut icon"
+      href="assets/img/la-musique.png"
+      type="image/x-icon"
+    />
+    <link rel="stylesheet" href="assets/css/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+      integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <title>Groupie Tracker</title>
+  </head>
+
+  <body>
+    <div class="gradient"></div>
+    <div class="play">
+      <i class="fa-solid fa-music"></i>
+    </div>
+    <div class="music1">
+      <i class="fa-solid fa-music"></i>
+    </div>
+    <div class="music2">
+      <i class="fa-solid fa-music"></i>
+    </div>
+    <div class="title">
+      <h1>Groupie Tracker</h1>
+      <p>All bands in one place</p>
+    </div>
+    <!-- filter -->
+    <div class="filter-div">
+      <h1>Filter:</h1>
+      <div>
+        <form action="/Filter" method="get">
+          <!--  -->
+          <div>
+            <label for="creationDate">Creation Date: </label>
+            <input
+              type="range"
+              name="minCreationDate"
+              min="{{.MinDc}}"
+              max="{{.MaxDc}}"
+              required
+            />
+            <input
+              type="range"
+              name="maxCreationDate"
+              min="{{.MinDc}}"
+              max="{{.MaxDc}}"
+              required
+            />
+          </div>
+          <!--  -->
+          <div>
+            <select name="firstAlbum1">
+              <option value="">Select one Date.</option>
+               {{range .Art}}
+              <option value="{{.FirstAlbum}}">{{.FirstAlbum}}</option>
+              {{end}}
+            </select>
+            <select name="firstAlbum2">
+              <option value="">Select one Date.</option>
+               {{range .Art}}
+              <option value="{{.FirstAlbum}}">{{.FirstAlbum}}</option>
+              {{end}}
+            </select>
+          </div>
+          <div>
+            <label for="members1">1</label>
+            <input
+              type="checkbox"
+              name="numberOfMembers"
+              id="members1"
+              value="1"
+            />
+          
+            <label for="members2">2</label>
+            <input
+              type="checkbox"
+              name="numberOfMembers"
+              id="members2"
+              value="2"
+            />
+          
+            <label for="members3">3</label>
+            <input
+              type="checkbox"
+              name="numberOfMembers"
+              id="members3"
+              value="3"
+            />
+          
+            <label for="members4">4</label>
+            <input
+              type="checkbox"
+              name="numberOfMembers"
+              id="members4"
+              value="4"
+            />
+          
+            <label for="members5">5</label>
+            <input
+              type="checkbox"
+              name="numberOfMembers"
+              id="members5"
+              value="5"
+            />
+          
+            <label for="members6">6</label>
+            <input
+              type="checkbox"
+              name="numberOfMembers"
+              id="members6"
+              value="6"
+            />
+          
+            <label for="members7">7</label>
+            <input
+              type="checkbox"
+              name="numberOfMembers"
+              id="members7"
+              value="7"
+            />
+          
+            <label for="members8">8</label>
+            <input
+              type="checkbox"
+              name="numberOfMembers"
+              id="members8"
+              value="8"
+            />
+          </div>
+          <div>
+           <input type="text" name="locationsOfConcerts" list="d">
+           <datalist id="d">
+             {{range $key,$value := .Locations}}
+               <option value="{{$key}}">{{$key}}</option>
+             {{end}}
+           </datalist>
+          </div>
+          </div>
+          <button type="submit">submit</button>
+        </form>
+      </div>
+    </div>
+    <div class="container">
+      {{range .Art}}
+      <div>
+        <a href="/Infos?id={{.ID}}">
+          <img loading="lazy" width="240" height="240" src="{{.Image}}" />
+          <h4>{{.Name}}</h4>
+        </a>
+      </div>
+      {{end}}
+    </div>
+  </body>
+  
+</html>
