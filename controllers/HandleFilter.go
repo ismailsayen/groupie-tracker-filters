@@ -1,38 +1,30 @@
 package controllers
 
 import (
-	"fmt"
 	"net/http"
-	"sync"
 
-	"groupietracker/controllers/filter"
 	"groupietracker/database"
 )
 
 func HandleFilter(w http.ResponseWriter, r *http.Request) {
 	if r.Method == http.MethodGet {
 		r.ParseForm()
-		var wg sync.WaitGroup
+
 		var artists []database.Artists
 		minCreationDate := r.FormValue("minCreationDate")
 		maxCreationDate := r.FormValue("maxCreationDate")
-		firstAlbum := r.FormValue("firstAlbum")
+		firstAlbum1 := r.FormValue("firstAlbum1")
+		firstAlbum2 := r.FormValue("firstAlbum2")
 		numberOfMembers := r.Form["numberOfMembers"]
 		locationsOfConcerts := r.FormValue("locationsOfConcerts")
-		if minCreationDate >= maxCreationDate {
-			e := database.ErrorPage{Status: 400, Type: "The minimum date must always be less than the maximum date. Please go to the homepage and try again."}
-			RenderTempalte(w, "templates/error.html", e, http.StatusBadRequest)
-			return
+		if minCreationDate > maxCreationDate {
+			minCreationDate, maxCreationDate = maxCreationDate, minCreationDate
 		}
 		if value, ok := cache.Load("artists"); ok {
 			if artistsCache, ok := value.(*[]database.Artists); ok {
-				wg.Add(4)
-				go filter.GetCreattionDate(&artists, artistsCache, minCreationDate, maxCreationDate, &wg)
-				go filter.GetFirstAlbum(&artists, artistsCache, firstAlbum, &wg)
-				go filter.NumberOfMembers(&artists, artistsCache, numberOfMembers, &wg)
-				go filter.LocationsOfConcert(&LocaFltr, &artists, artistsCache, locationsOfConcerts, &wg)
-				wg.Wait()
-				fmt.Println(artists)
+				artistsFiltred(artistsCache, &artists, minCreationDate, maxCreationDate, firstAlbum1, firstAlbum2, locationsOfConcerts, numberOfMembers)
+				RenderTempalte(w, "templates/filter.html", artists, http.StatusInternalServerError)
+				return
 			} else {
 				e := database.ErrorPage{Status: 500, Type: "Error while getting artist data. Please go back to the home page and try again."}
 				RenderTempalte(w, "templates/error.html", e, http.StatusInternalServerError)
@@ -48,4 +40,11 @@ func HandleFilter(w http.ResponseWriter, r *http.Request) {
 		RenderTempalte(w, "templates/error.html", e, http.StatusMethodNotAllowed)
 		return
 	}
+}
+
+func artistsFiltred(data *[]database.Artists, a *[]database.Artists, minCreationDate, maxCreationDate, firstAlbum1, firstAlbum2, locationsOfConcerts string, numberOfMembers []string) []database.Artists {
+	hasDate:=false
+	hasFirstAlbum:=false
+	hasMembers:=false
+	hasLocations:=false
 }

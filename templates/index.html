@@ -45,21 +45,32 @@
             <input
               type="range"
               name="minCreationDate"
+              id="minCreationDate"
               min="{{.MinDc}}"
               max="{{.MaxDc}}"
-              required
+              step="1"
             />
+            <span id="minValue" style="color: white;">{{.MinDc}}</span>
+            
             <input
               type="range"
               name="maxCreationDate"
+              id="maxCreationDate"
               min="{{.MinDc}}"
               max="{{.MaxDc}}"
-              required
+              step="1"
             />
+            <span id="maxValue" style="color: white;">{{.MaxDc}}</span>
           </div>
           <!--  -->
           <div>
-            <select name="firstAlbum">
+            <select name="firstAlbum1">
+              <option value="">Select one Date.</option>
+               {{range .Art}}
+              <option value="{{.FirstAlbum}}">{{.FirstAlbum}}</option>
+              {{end}}
+            </select>
+            <select name="firstAlbum2">
               <option value="">Select one Date.</option>
                {{range .Art}}
               <option value="{{.FirstAlbum}}">{{.FirstAlbum}}</option>
@@ -155,5 +166,19 @@
       {{end}}
     </div>
   </body>
+
+  <script>
+    const minRange = document.getElementById("minCreationDate");
+    const maxRange = document.getElementById("maxCreationDate");
+    const minValueDisplay = document.getElementById("minValue");
+    const maxValueDisplay = document.getElementById("maxValue");
   
+    minRange.addEventListener("input", (event) => {
+      minValueDisplay.textContent = event.target.value;
+    });
+  
+    maxRange.addEventListener("input", (event) => {
+      maxValueDisplay.textContent = event.target.value;
+    });
+  </script>
 </html>
