@@ -21,9 +21,11 @@
 
   <body>
     <div class="gradient"></div>
-    <div class="play">
-      <i class="fa-solid fa-music"></i>
-    </div>
+    <a href="/">
+      <div class="play">
+        <i class="fa-solid fa-music"></i>
+      </div>ds
+    </a>
     <div class="music1">
       <i class="fa-solid fa-music"></i>
     </div>
@@ -40,116 +42,123 @@
       <div class="inputs">
         <form action="/Filter" method="get">
           <!--  -->
-          <div class="creation-date">
-            <h3 >Creation Date: </h3>
-            <input
-              type="range"
-              name="minCreationDate"
-              id="minCreationDate"
-              min="{{.MinDc}}"
-              max="{{.MaxDc}}"
-              step="1"
-            />
-            <span id="minValue" style="color: white;">{{.MinDc}}</span>
-            
-            <input
-              type="range"
-              name="maxCreationDate"
-              id="maxCreationDate"
-              min="{{.MinDc}}"
-              max="{{.MaxDc}}"
-              step="1"
-            />
-            <span id="maxValue" style="color: white;">{{.MaxDc}}</span>
+          <div class="filter-head">
+            <div class="creation-date">
+              <h3 >Creation Date: </h3>
+              <span id="minValue">{{.MinDc}}</span>
+              <input
+                type="range"
+                name="minCreationDate"
+                id="minCreationDate"
+                min="{{.MinDc}}"
+                max="{{.MaxDc}}"
+                step="1"
+              />
+              
+              <input
+                type="range"
+                name="maxCreationDate"
+                id="maxCreationDate"
+                min="{{.MinDc}}"
+                max="{{.MaxDc}}"
+                step="1"
+              />
+              <span id="maxValue">{{.MaxDc}}</span>
+            </div>
+            <!--  -->
+            <div>
+              <h3>First Album:</h3>
+              <input type="number" name="firstAlbum1"  placeholder="year" min="{{.MinDc}}">
+              <input type="number" name="firstAlbum2"  placeholder="year" min="{{.MinDc}}">
+            </div>
+            <!--  -->
+            <div>
+              <h3>Locations :</h3>
+              <input type="text" name="locationsOfConcerts" list="d">
+              <datalist id="d">
+                {{range $key,$value := .Locations}}
+                  <option value="{{$key}}">{{$key}}</option>
+                {{end}}
+              </datalist>
+             </div>
           </div>
-          <!--  -->
-          <div>
-            <select name="firstAlbum1">
-              <option value="">Select one Date.</option>
-              {{range $key,$value := .Album}}
-                <option value="{{$key}}">{{$key}}</option>
-              {{end}}
-            </select>
-            <select name="firstAlbum2">
-              <option value="">Select one Date.</option>
-              {{range $key,$value := .Album}}
-              <option value="{{$key}}">{{$key}}</option>
-            {{end}}
-            </select>
-          </div>
-          <div>
-            <h3 style="color: white;">Number of Members: </h3>
-            <label for="members1" style="color: white;">1</label>
-            <input
-              type="checkbox"
-              name="numberOfMembers"
-              id="members1"
-              value="1"
-            />
-          
-            <label for="members2" style="color: white;">2</label>
-            <input
-              type="checkbox"
-              name="numberOfMembers"
-              id="members2"
-              value="2"
-            />
-          
-            <label for="members3" style="color: white;">3</label>
-            <input
-              type="checkbox"
-              name="numberOfMembers"
-              id="members3"
-              value="3"
-            />
-          
-            <label for="members4" style="color: white;">4</label>
-            <input
-              type="checkbox"
-              name="numberOfMembers"
-              id="members4"
-              value="4"
-            />
-          
-            <label for="members5" style="color: white;">5</label>
-            <input
-              type="checkbox"
-              name="numberOfMembers"
-              id="members5"
-              value="5"
-            />
-          
-            <label for="members6" style="color: white;">6</label>
-            <input
-              type="checkbox"
-              name="numberOfMembers"
-              id="members6"
-              value="6"
-            />
-          
-            <label for="members7" style="color: white;">7</label>
-            <input
-              type="checkbox"
-              name="numberOfMembers"
-              id="members7"
-              value="7"
-            />
-          
-            <label for="members8" style="color: white;">8</label>
-            <input
-              type="checkbox"
-              name="numberOfMembers"
-              id="members8"
-              value="8"
-            />
-          </div>
-          <div>
-           <input type="text" name="locationsOfConcerts" list="d">
-           <datalist id="d">
-             {{range $key,$value := .Locations}}
-               <option value="{{$key}}">{{$key}}</option>
-             {{end}}
-           </datalist>
+          <div class="filter-footer">
+           
+            <h3>Number of Members: </h3>
+            <div class="groups">
+              <div class="group">
+                <label for="members1">1</label>
+                <input
+                  type="checkbox"
+                  name="numberOfMembers"
+                  id="members1"
+                  value="1"
+                />
+              </div>
+              <div class="group">
+                <label for="members2">2</label>
+                <input
+                  type="checkbox"
+                  name="numberOfMembers"
+                  id="members2"
+                  value="2"
+                />
+              </div>
+              <div class="group">
+                <label for="members3">3</label>
+                <input
+                  type="checkbox"
+                  name="numberOfMembers"
+                  id="members3"
+                  value="3"
+                />
+              </div>
+              <div class="group">
+                <label for="members4">4</label>
+                <input
+                  type="checkbox"
+                  name="numberOfMembers"
+                  id="members4"
+                  value="4"
+                />
+              </div>
+              <div class="group">
+                <label for="members5">5</label>
+                <input
+                  type="checkbox"
+                  name="numberOfMembers"
+                  id="members5"
+                  value="5"
+                />
+              </div>
+              <div class="group">
+                <label for="members6">6</label>
+                <input
+                  type="checkbox"
+                  name="numberOfMembers"
+                  id="members6"
+                  value="6"
+                />
+              </div>
+              <div class="group">
+                <label for="members7">7</label>
+                <input
+                  type="checkbox"
+                  name="numberOfMembers"
+                  id="members7"
+                  value="7"
+                />
+              </div>
+              <div class="group">
+                <label for="members8">8</label>
+                <input
+                  type="checkbox"
+                  name="numberOfMembers"
+                  id="members8"
+                  value="8"
+                />
+              </div>
+            </div>
           </div>
           </div>
           <button type="submit">submit</button>

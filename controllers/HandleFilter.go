@@ -19,18 +19,19 @@ func HandleFilter(w http.ResponseWriter, r *http.Request) {
 			RenderTempalte(w, "templates/error.html", e, http.StatusInternalServerError)
 			return
 		}
-		
+
 		minCreationDate := r.FormValue("minCreationDate")
 		maxCreationDate := r.FormValue("maxCreationDate")
 		firstAlbum1 := r.FormValue("firstAlbum1")
 		firstAlbum2 := r.FormValue("firstAlbum2")
 		numberOfMembers := r.Form["numberOfMembers"]
 		locationsOfConcerts := r.FormValue("locationsOfConcerts")
-		
+
 		artistsFiltred(&artistsData, &artists, minCreationDate, maxCreationDate, firstAlbum1, firstAlbum2, locationsOfConcerts, numberOfMembers)
 		HandDatafilter(data, &artistsData, &LocaFltr)
+		artistsData[20].Image = "assets/img/3ib.jpg"
 		data.Art = artists
-		RenderTempalte(w, "templates/index.html", data, http.StatusInternalServerError)
+		RenderTempalte(w, "templates/index.html", data, http.StatusOK)
 		return
 
 	} else {
