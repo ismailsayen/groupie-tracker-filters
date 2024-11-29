@@ -37,43 +37,49 @@
     <!-- filter -->
     <div class="filter-div">
       <h1>Filter:</h1>
-      <div>
+      <div class="inputs">
         <form action="/Filter" method="get">
           <!--  -->
-          <div>
-            <label for="creationDate">Creation Date: </label>
+          <div class="creation-date">
+            <h3 >Creation Date: </h3>
             <input
               type="range"
               name="minCreationDate"
+              id="minCreationDate"
               min="{{.MinDc}}"
               max="{{.MaxDc}}"
-              required
+              step="1"
             />
+            <span id="minValue" style="color: white;">{{.MinDc}}</span>
+            
             <input
               type="range"
               name="maxCreationDate"
+              id="maxCreationDate"
               min="{{.MinDc}}"
               max="{{.MaxDc}}"
-              required
+              step="1"
             />
+            <span id="maxValue" style="color: white;">{{.MaxDc}}</span>
           </div>
           <!--  -->
           <div>
             <select name="firstAlbum1">
               <option value="">Select one Date.</option>
-               {{range .Art}}
-              <option value="{{.FirstAlbum}}">{{.FirstAlbum}}</option>
+              {{range $key,$value := .Album}}
+                <option value="{{$key}}">{{$key}}</option>
               {{end}}
             </select>
             <select name="firstAlbum2">
               <option value="">Select one Date.</option>
-               {{range .Art}}
-              <option value="{{.FirstAlbum}}">{{.FirstAlbum}}</option>
-              {{end}}
+              {{range $key,$value := .Album}}
+              <option value="{{$key}}">{{$key}}</option>
+            {{end}}
             </select>
           </div>
           <div>
-            <label for="members1">1</label>
+            <h3 style="color: white;">Number of Members: </h3>
+            <label for="members1" style="color: white;">1</label>
             <input
               type="checkbox"
               name="numberOfMembers"
@@ -81,7 +87,7 @@
               value="1"
             />
           
-            <label for="members2">2</label>
+            <label for="members2" style="color: white;">2</label>
             <input
               type="checkbox"
               name="numberOfMembers"
@@ -89,7 +95,7 @@
               value="2"
             />
           
-            <label for="members3">3</label>
+            <label for="members3" style="color: white;">3</label>
             <input
               type="checkbox"
               name="numberOfMembers"
@@ -97,7 +103,7 @@
               value="3"
             />
           
-            <label for="members4">4</label>
+            <label for="members4" style="color: white;">4</label>
             <input
               type="checkbox"
               name="numberOfMembers"
@@ -105,7 +111,7 @@
               value="4"
             />
           
-            <label for="members5">5</label>
+            <label for="members5" style="color: white;">5</label>
             <input
               type="checkbox"
               name="numberOfMembers"
@@ -113,7 +119,7 @@
               value="5"
             />
           
-            <label for="members6">6</label>
+            <label for="members6" style="color: white;">6</label>
             <input
               type="checkbox"
               name="numberOfMembers"
@@ -121,7 +127,7 @@
               value="6"
             />
           
-            <label for="members7">7</label>
+            <label for="members7" style="color: white;">7</label>
             <input
               type="checkbox"
               name="numberOfMembers"
@@ -129,7 +135,7 @@
               value="7"
             />
           
-            <label for="members8">8</label>
+            <label for="members8" style="color: white;">8</label>
             <input
               type="checkbox"
               name="numberOfMembers"
@@ -151,15 +157,33 @@
       </div>
     </div>
     <div class="container">
-      {{range .Art}}
-      <div>
-        <a href="/Infos?id={{.ID}}">
-          <img loading="lazy" width="240" height="240" src="{{.Image}}" />
-          <h4>{{.Name}}</h4>
-        </a>
-      </div>
+      {{if .Art}}
+        {{range .Art}}
+        <div>
+          <a href="/Infos?id={{.ID}}">
+            <img loading="lazy" width="240" height="240" src="{{.Image}}" />
+            <h4>{{.Name}}</h4>
+          </a>
+        </div>
+        {{end}}
+      {{else}}
+        <h1 style="color: white; width: 100%;position: relative;">Sorry, we couldn't find any data. Please try again.🥺</h1>
       {{end}}
     </div>
   </body>
+
+  <script>
+    const minRange = document.getElementById("minCreationDate");
+    const maxRange = document.getElementById("maxCreationDate");
+    const minValueDisplay = document.getElementById("minValue");
+    const maxValueDisplay = document.getElementById("maxValue");
   
+    minRange.addEventListener("input", (event) => {
+      minValueDisplay.textContent = event.target.value;
+    });
+  
+    maxRange.addEventListener("input", (event) => {
+      maxValueDisplay.textContent = event.target.value;
+    });
+  </script>
 </html>

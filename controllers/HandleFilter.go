@@ -2,7 +2,6 @@ package controllers
 
 import (
 	"net/http"
-	"sync"
 
 	"groupietracker/controllers/filter"
 	"groupietracker/database"
@@ -11,38 +10,49 @@ import (
 func HandleFilter(w http.ResponseWriter, r *http.Request) {
 	if r.Method == http.MethodGet {
 		r.ParseForm()
-		var wg sync.WaitGroup
 		var artists []database.Artists
+		var artistsData []database.Artists
+		data := &database.Data{}
+		err := FetchAPI("https://groupietrackers.herokuapp.com/api/artists", &artistsData)
+		if err != nil {
+			e := database.ErrorPage{Status: 500, Type: "Server Error"}
+			RenderTempalte(w, "templates/error.html", e, http.StatusInternalServerError)
+			return
+		}
+		
 		minCreationDate := r.FormValue("minCreationDate")
 		maxCreationDate := r.FormValue("maxCreationDate")
 		firstAlbum1 := r.FormValue("firstAlbum1")
 		firstAlbum2 := r.FormValue("firstAlbum2")
 		numberOfMembers := r.Form["numberOfMembers"]
 		locationsOfConcerts := r.FormValue("locationsOfConcerts")
-		if minCreationDate >= maxCreationDate {
-			minCreationDate, maxCreationDate = maxCreationDate, minCreationDate
-		}
-		if value, ok := cache.Load("artists"); ok {
-			if artistsCache, ok := value.(*[]database.Artists); ok {
-				wg.Add(4)
-				go filter.GetCreattionDate(&artists, artistsCache, minCreationDate, maxCreationDate, &wg)
-				go filter.GetFirstAlbum(&artists, artistsCache, firstAlbum1, firstAlbum2, &wg)
-				go filter.NumberOfMembers(&artists, artistsCache, numberOfMembers, &wg)
-				go filter.LocationsOfConcert(&LocaFltr, &artists, artistsCache, locationsOfConcerts, &wg)
-				wg.Wait()
-			} else {
-				e := database.ErrorPage{Status: 500, Type: "Error while getting artist data. Please go back to the home page and try again."}
-				RenderTempalte(w, "templates/error.html", e, http.StatusInternalServerError)
-				return
-			}
-		} else {
-			e := database.ErrorPage{Status: 500, Type: "Error while getting artist data. Please go back to the home page and try again."}
-			RenderTempalte(w, "templates/error.html", e, http.StatusInternalServerError)
-			return
-		}
+		
+		artistsFiltred(&artistsData, &artists, minCreationDate, maxCreationDate, firstAlbum1, firstAlbum2, locationsOfConcerts, numberOfMembers)
+		HandDatafilter(data, &artistsData, &LocaFltr)
+		data.Art = artists
+		RenderTempalte(w, "templates/index.html", data, http.StatusInternalServerError)
+		return
+
 	} else {
 		e := database.ErrorPage{Status: 405, Type: "Method Not Allowed"}
 		RenderTempalte(w, "templates/error.html", e, http.StatusMethodNotAllowed)
 		return
+	}
+}
+
+func artistsFiltred(data *[]database.Artists, a *[]database.Artists, minCreationDate, maxCreationDate, firstAlbum1, firstAlbum2, locationsOfConcerts string, numberOfMembers []string) {
+	hasDate := false
+	hasFirstAlbum := false
+	hasMembers := false
+	hasLocations := false
+	for _, artist := range *data {
+		hasDate = filter.GetCreattionDate(&artist, minCreationDate, maxCreationDate)
+		hasFirstAlbum = filter.GetFirstAlbum(&artist, firstAlbum1, firstAlbum2)
+		hasMembers = filter.NumberOfMembers(&artist, numberOfMembers)
+		hasLocations = filter.LocationsOfConcert(&LocaFltr, &artist, locationsOfConcerts)
+		if hasDate && hasFirstAlbum && hasMembers && hasLocations {
+			*a = append(*a, artist)
+		}
+
 	}
 }

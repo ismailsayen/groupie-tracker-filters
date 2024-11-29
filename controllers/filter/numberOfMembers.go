@@ -2,22 +2,20 @@ package filter
 
 import (
 	"strconv"
-	"sync"
 
 	"groupietracker/database"
 )
 
-func NumberOfMembers(a *[]database.Artists, data *[]database.Artists, key []string, wg *sync.WaitGroup) {
-	defer wg.Done()
+func NumberOfMembers(a *database.Artists, key []string) bool {
 	if len(key) == 0 {
-		return
+		return true
 	}
-	for _, ele := range *data {
-		for _, e := range key {
-			nb, _ := strconv.Atoi(e)
-			if len(ele.Members) == nb {
-				*a = append(*a, ele)
-			}
+
+	for _, e := range key {
+		nb, _ := strconv.Atoi(e)
+		if len(a.Members) == nb {
+			return true
 		}
 	}
+	return false
 }

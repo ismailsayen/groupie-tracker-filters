@@ -1,22 +1,24 @@
 package filter
 
 import (
-	"sync"
-
 	"groupietracker/database"
 )
 
-func LocationsOfConcert(l *database.LocaFltr, a *[]database.Artists, data *[]database.Artists, key string, wg *sync.WaitGroup) {
-	defer wg.Done()
+func LocationsOfConcert(l *database.LocaFltr, a *database.Artists, key string) bool {
+	if key == "" {
+		return true
+	}
+	if key == "seattle-usa" {
+		key = "washington-usa"
+	}
 	for _, locations := range l.Index {
 		for _, adress := range locations.Locations {
 			if adress == key {
-				for _, ele := range *data {
-					if locations.ID == ele.ID {
-						*a = append(*a, ele)
-					}
+				if locations.ID == a.ID {
+					return true
 				}
 			}
 		}
 	}
+	return false
 }
