@@ -85,7 +85,7 @@ body {
   gap: 20px;
 }
 
-.container > div > a {
+.container>div>a {
   transition: 0.6s;
   background-color: #1f2a38;
   border-radius: 32px;
@@ -99,39 +99,61 @@ body {
   text-decoration: none;
 }
 
-.container > div > a:hover {
+.container>div>a:hover {
   scale: 1.05;
 }
 
-.container > div img {
+.container>div img {
   border-radius: 27px;
   opacity: 0.9;
 }
 
-.container > div h4 {
+.container>div h4 {
   color: #eaeaea;
   text-decoration: none;
 }
+
 /* Filter Handler */
 .filter-div {
-  background: lightcoral;
-  padding: 20px;
-  margin: 10px 0;
+  margin: 50px auto;
+  max-width: 1400px;
 }
-.filter-head {
-  display: flex;
-  background-color: aqua;
-  justify-content: space-around;
-  padding: 15px;
+
+.right-side,
+.left-side {
+  width: 600px;
 }
-.filter-footer {
-  text-align: center;
-}
-.groups {
+
+form {
   display: flex;
   justify-content: center;
   gap: 20px;
 }
+
+.creation-date h3,
+.FAlbum h3,
+.NMbrs h3,
+.Locations h3 {
+  color: white;
+  margin: 5px 0;
+}
+
+.minV,
+.maxV {
+  background-color: #24282C;
+  padding: 10px;
+  border-radius: 18px;
+  color: white;
+  width: max-content;
+}
+
+.FAlbum input[type="number"] {
+  background-color: #24282C;
+  color: white;
+  width: 75px;
+  height: 35px;
+}
+
 .group {
   display: flex;
   justify-content: space-around;
@@ -139,49 +161,159 @@ body {
   gap: 0.5rem;
   max-width: 60px;
 }
+
+.groups {
+  display: flex;
+  gap: 20px;
+}
+
+hr {
+  color: white;
+}
+
 .group label {
+  color: white;
   font-size: 20px;
 }
+
 input[type="checkbox"] {
   height: 24px;
   width: 24px;
+  background-color: #24282C;
+  border-radius: 6px;
+  appearance: none;
+  cursor: pointer;
 }
+
+input[type="checkbox"]:checked {
+  background-color: white;
+}
+
+.loc-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+input[type="text"] {
+  padding: 14px;
+  background-color: #24282C;
+  color: white;
+  border-radius: 4px;
+  width: 400px;
+  height: 35px;
+}
+
+.loc-content button {
+  background-color: #0093F5;
+  border: none;
+  color: white;
+  padding: 16px;
+  border-radius: 10px;
+  font-weight: bold;
+}
+
+.range {
+  display: flex;
+  gap: 5px;
+}
+
+.cont-dt {
+  display: flex;
+  gap: 10px;
+}
+
+@media screen and (max-width: 998px) {
+  form {
+    flex-direction: column;
+    padding: 15px;
+  }
+
+  .title h1 {
+    font-size: 94px;
+  }
+
+  .right-side,
+  .left-side {
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 516px) {
+  .loc-content {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .loc-content button {
+    width: 100%;
+  }
+
+  input[type="text"] {
+    width: 93vw;
+  }
+
+  .groups {
+    flex-wrap: wrap;
+  }
+
+  .title h1 {
+    font-size: 57px;
+  }
+
+  .title p {
+    font-size: 16px;
+  }
+}
+
+@media screen and (max-width: 485px) {
+
+.cont-dt{
+  flex-direction: column;
+}
+.minV, .maxV{
+  font-size: 14px;
+}
+}
+
 @media screen and (max-width: 425px) {
   .title h1 {
     font-size: 52px;
   }
+
   .title p {
     font-size: 18px;
   }
 }
 
 @media screen and (max-width: 288px) {
-  .container > div img {
+  .container>div img {
     width: 200px;
     height: 200px;
   }
 
-  .container > div h4 {
+  .container>div h4 {
     font-size: 12px;
   }
 
-  .container > div > a {
+  .container>div>a {
     height: 260px;
   }
 }
 
 @media screen and (max-width: 200px) {
-  .container > div img {
+  .container>div img {
     width: 150px;
     height: 150px;
     gap: 10px;
   }
 
-  .container > div h4 {
+  .container>div h4 {
     font-size: 7px;
   }
 
-  .container > div > a {
+  .container>div>a {
     height: 190px;
     gap: 5px;
   }
