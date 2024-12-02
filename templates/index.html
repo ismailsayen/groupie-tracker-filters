@@ -113,8 +113,8 @@
       </div>
     </form>
   </div>
+  {{if .Art}}
   <div class="container">
-    {{if .Art}}
     {{range .Art}}
     <div>
       <a href="/Infos?id={{.ID}}">
@@ -124,7 +124,7 @@
     </div>
     {{end}}
     {{else}}
-    <h1 style="color: white; width: 100%;position: relative;">Sorry, we couldn't find any data. Please try again.🥺</h1>
+    <h1 class="err-msg">Sorry, we couldn't find any data. Please try again.🥺</h1>
     {{end}}
   </div>
 </body>
