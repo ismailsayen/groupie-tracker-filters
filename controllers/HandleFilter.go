@@ -7,6 +7,7 @@ import (
 	"groupietracker/utils"
 )
 
+// HandleFilter fetches data from an API, filters the artists based on user input, and renders the filtered data on the page.
 func HandleFilter(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodGet {
 		e := database.ErrorPage{Status: 405, Type: "Method Not Allowed"}
@@ -31,13 +32,14 @@ func HandleFilter(w http.ResponseWriter, r *http.Request) {
 	numberOfMembers := r.Form["numberOfMembers"]
 	locationsOfConcerts := r.FormValue("locationsOfConcerts")
 
+	artistsData[20].Image = "assets/img/3ib.jpg"
 	artistsFiltred(&artistsData, &artists, minCreationDate, maxCreationDate, firstAlbum1, firstAlbum2, locationsOfConcerts, numberOfMembers)
 	HandDatafilter(data, &artistsData, &LocaFltr)
-	artistsData[20].Image = "assets/img/3ib.jpg"
 	data.Art = artists
 	RenderTempalte(w, "templates/index.html", data, http.StatusOK)
 }
 
+// artistsFiltred filters the artists based on the provided criteria such as creation date, first album, number of members, and concert locations.
 func artistsFiltred(data *[]database.Artists, a *[]database.Artists, minCreationDate, maxCreationDate, firstAlbum1, firstAlbum2, locationsOfConcerts string, numberOfMembers []string) {
 	hasDate := false
 	hasFirstAlbum := false

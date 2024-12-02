@@ -25,26 +25,21 @@ func FetchAPI(url string, s any) error {
 
 	return nil
 }
-
+// get all artist details Locations,Relations and dates
 func GetForeignData(artist *database.Artists) error {
-	cha := make(chan error, 3)
+	err := FetchAPI(artist.Locations, &artist.Loca)
+	if err != nil {
+		return err
+	}
 
-	go func() {
-		cha <- FetchAPI(artist.Locations, &artist.Loca)
-	}()
+	err = FetchAPI(artist.CongertDates, &artist.ConDT)
+	if err != nil {
+		return err
+	}
 
-	go func() {
-		cha <- FetchAPI(artist.CongertDates, &artist.ConDT)
-	}()
-
-	go func() {
-		cha <- FetchAPI(artist.Relations, &artist.Rela)
-	}()
-
-	for i := 0; i < 3; i++ {
-		if err := <-cha; err != nil {
-			return err
-		}
+	err = FetchAPI(artist.Relations, &artist.Rela)
+	if err != nil {
+		return err
 	}
 
 	return nil

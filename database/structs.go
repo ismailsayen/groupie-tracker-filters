@@ -9,7 +9,6 @@ type Data struct {
 	MinDc     int
 	MaxDc     int
 	Locations map[string]bool
-	Album     map[string]bool
 }
 
 type Artists struct {
@@ -27,11 +26,7 @@ type Artists struct {
 	Rela         Relation
 }
 type LocaFltr struct {
-	Index []struct {
-		ID        int      `json:"id"`
-		Locations []string `json:"locations"`
-		Dates     string   `json:"dates"`
-	} `json:"index"`
+	Index []Locations `json:"index"`
 }
 
 type Locations struct {
@@ -70,8 +65,7 @@ func (d *Data) FindMinMax(a *[]Artists, wg *sync.WaitGroup) {
 	d.MinDc = min
 }
 
-func (d *Data) AllLocations(l *LocaFltr, wg *sync.WaitGroup) {
-	defer wg.Done()
+func (d *Data) AllLocations(l *LocaFltr) {
 	if d.Locations == nil {
 		d.Locations = make(map[string]bool)
 	}
@@ -79,16 +73,5 @@ func (d *Data) AllLocations(l *LocaFltr, wg *sync.WaitGroup) {
 		for _, e := range ele.Locations {
 			d.Locations[e] = true
 		}
-	}
-}
-
-func (d *Data) Albums(artists *[]Artists, wg *sync.WaitGroup) {
-	defer wg.Done()
-	if d.Locations == nil {
-		d.Album = make(map[string]bool)
-	}
-	for _, artist := range *artists {
-		year := artist.FirstAlbum[len(artist.FirstAlbum)-4:]
-		d.Album[year] = true
 	}
 }

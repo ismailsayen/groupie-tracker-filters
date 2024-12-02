@@ -7,12 +7,10 @@ import (
 	"groupietracker/database"
 )
 
-func GetFirstAlbum(a *database.Artists, firstAlbum1, firstAlbum2 string) bool {
-	if len(firstAlbum1) == 0 && len(firstAlbum2) == 0 {
+func GetFirstAlbum(a *database.Artists, y1, y2 string) bool {
+	if len(y1) == 0 && len(y2) == 0 {
 		return true
 	}
-	y1 := firstAlbum1
-	y2 := firstAlbum2
 	if y1 > y2 {
 		y1, y2 = y2, y1
 	}

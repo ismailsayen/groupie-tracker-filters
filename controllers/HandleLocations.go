@@ -14,5 +14,5 @@ func HandleLocations(c *database.LocaFltr, d *database.Data, wg *sync.WaitGroup)
 		fmt.Println("Error fetching API:", err)
 		return
 	}
-	go d.AllLocations(c, wg)
+	d.AllLocations(c)
 }
