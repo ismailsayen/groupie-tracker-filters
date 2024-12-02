@@ -3,8 +3,8 @@ package controllers
 import (
 	"net/http"
 
-	"groupietracker/controllers/filter"
 	"groupietracker/database"
+	"groupietracker/utils"
 )
 
 func HandleFilter(w http.ResponseWriter, r *http.Request) {
@@ -44,10 +44,10 @@ func artistsFiltred(data *[]database.Artists, a *[]database.Artists, minCreation
 	hasMembers := false
 	hasLocations := false
 	for _, artist := range *data {
-		hasDate = filter.GetCreattionDate(&artist, minCreationDate, maxCreationDate)
-		hasFirstAlbum = filter.GetFirstAlbum(&artist, firstAlbum1, firstAlbum2)
-		hasMembers = filter.NumberOfMembers(&artist, numberOfMembers)
-		hasLocations = filter.LocationsOfConcert(&LocaFltr, &artist, locationsOfConcerts)
+		hasDate = utils.GetCreattionDate(&artist, minCreationDate, maxCreationDate)
+		hasFirstAlbum = utils.GetFirstAlbum(&artist, firstAlbum1, firstAlbum2)
+		hasMembers = utils.NumberOfMembers(&artist, numberOfMembers)
+		hasLocations = utils.LocationsOfConcert(&LocaFltr, &artist, locationsOfConcerts)
 		if hasDate && hasFirstAlbum && hasMembers && hasLocations {
 			*a = append(*a, artist)
 		}

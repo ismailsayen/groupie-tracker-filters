@@ -1,4 +1,4 @@
-package filter
+package utils
 
 import (
 	"groupietracker/database"
